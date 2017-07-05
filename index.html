@@ -16,34 +16,35 @@
 		<div class="center">
 			<form method="post" enctype="text/plain" id="form_login" class="form">
 				
-				<h2>Login</h2>
+				<h2 align="center">Login</h2>
 				Username:<input type="text" name="log_username" size="30" maxlength="100" id="login_username">
 				<br>
-				Senha:<input type="text" name="log_password" size="30" maxlength="100" id="login_password">
+				Senha:<input type="password" name="log_password" size="30" maxlength="100" id="login_password">
+				<br>
 				<br>
 				<input type="button" value="Entrar" onclick="login()">
 				<br>
 				<br>
 
-				<h2>Cadastrar</h2>
+				<h2 align="center">Cadastrar</h2>
 				Nome Completo:<input type="text" name="name" size="30" maxlength="100" id="name"> 
 				Username:<input type="text" name="userName" size="30" maxlength="25" id="userName">
 				Senha:<input type="password" name="nome" size="30" maxlength="25" id="password">
 				<p> Escolha os Tópicos desejados:
 				<br> 
-				<input TYPE="checkbox" NAME="java" VALUE="java" id="topic"> Java
+				<input TYPE="checkbox" NAME="item" VALUE="java"> Java
 				<br>
-				<input TYPE="checkbox" NAME="nodejs" VALUE="nodejs" id="topic"> Nodejs
+				<input TYPE="checkbox" NAME="item" VALUE="nodejs" id="topic"> Nodejs
 				<br>
-				<input TYPE="checkbox" NAME="python" VALUE="python" id="topic"> Python
+				<input TYPE="checkbox" NAME="item" VALUE="python" id="topic"> Python
 				<br>
-				<input TYPE="checkbox" NAME="swift" VALUE="swift" id="topic"> swift
+				<input TYPE="checkbox" NAME="item" VALUE="swift" id="topic"> swift
 				<br>
-				<input TYPE="checkbox" NAME="javascript" VALUE="javascript" id="topic"> JavaScript
+				<input TYPE="checkbox" NAME="item" VALUE="javascript" id="topic"> JavaScript
 				<br>
-				<input TYPE="checkbox" NAME="ruby" VALUE="ruby" id="topic"> Ruby on Rails 
+				<input TYPE="checkbox" NAME="item" VALUE="ruby" id="topic"> Ruby on Rails 
 				<p>
-				<input type="button" value="Entrar" onclick="save()">
+				<input type="button" value="Cadastrar" onclick="save()">
 			</form> 
 		</div>
 	</body>

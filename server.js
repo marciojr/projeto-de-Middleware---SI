@@ -2,8 +2,9 @@ var name;
 var password;
 var username;
 var topics;
+var users;
 var result;
-var currentUser;
+getData();
 
 var WebSocketServer = require('ws').Server;
 
@@ -17,19 +18,93 @@ wss.on('connection', function(ws) {
 
 		if(msg[0] == 'login'){
 			// comandos do login
+			getData()
 			username = msg[1];
 			password = msg[2];
-
+			console.log("user: " + username + "   pass: " + password)
+			result = verificator();
+	
+			ws.send(result)
 		}else{
 			//comandos save
 			name = msg[1];
 			username = msg[2];
 			password = msg[3];
 			topics = msg[4];
+			getData()
+			
+			if(hasUsername()){
+				result = "Username Indisponível!";
+			}else{
+				result = setUser();
+				console.log(result)
+			}
+			ws.send(result);
 		}
+	});
 });
 
-console.log('new connection');
-ws.send('Msg from server');
+function getData() {
+	var fs = require('fs');
+	fs.readFile('./Data.js', 'utf-8', function (err, data) {
+    	if(err) throw err;
+    	users = data;
+	});
+}
 
-});
+function setUser(){
+	var fs = require('fs');
+	fs.appendFile('./Data.js',(name+":"+username+":"+password+":"+topics+"|"), function (err) {
+		if (err) throw err;
+	});
+	console.log("Usuário "+ name +" adicionado ao banco...")
+	return "Usuário Cadastrado com Sucesso!";
+}
+
+function hasUsername(){
+	getData();
+	if (users == null) {
+		return false
+	}else if(users.indexOf(username) !== -1){
+		return true
+	}else{
+		return false
+	}
+}
+
+function verificator(){
+	var index = users.indexOf(username);
+	
+	if(index === -1){
+		console.log( "Usuário Inexistente.")
+		return "Usuário Inexistente.";
+	}else{
+		var data = getUser(users.split("|"));
+		if(data){
+			console.log( "Usuário Logado com Sucesso!")
+			return "Usuário Logado com Sucesso!"
+		}else{
+			console.log( "Senha e/ou Username Incorretos!")
+			return "Senha e/ou Username Incorretos!"
+		}
+	}
+}
+
+function getUser(userData){
+	for (var i = 0; i < userData.length; i++) {
+		var tokens = userData[i].split(":");
+		var auxName = tokens[1];
+		var auxPass = tokens[2];
+
+		console.log(auxName)
+
+		if(username == auxName){
+			if(password == auxPass){
+				return true
+			}else{
+				return false
+			}
+		}
+	}
+	return false
+}
