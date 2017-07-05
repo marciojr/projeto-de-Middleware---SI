@@ -5,11 +5,12 @@ var topics;
 var users;
 var result;
 getData();
+var contador = 0;
 
 var WebSocketServer = require('ws').Server;
 
+/*Conexão do Index - Registrar e Logar*/
 wss = new WebSocketServer({port: 9090, path: '/server'});
-
 wss.on('connection', function(ws) {
 
 	ws.on('message', function(message) {
@@ -44,9 +45,25 @@ wss.on('connection', function(ws) {
 	});
 });
 
+
+
+/*Conexão da tela de discussão - Tela 2*/
+wss1 = new WebSocketServer({port: 9080, path: '/server'});
+wss1.on('connection', function(ws) {
+
+	ws.on('message', function(message) {
+		var msg = message;
+		var result = setTopic(msg);
+		ws.send(result);
+
+		
+	});
+});
+
+
 function getData() {
 	var fs = require('fs');
-	fs.readFile('./Data.js', 'utf-8', function (err, data) {
+	fs.readFile('./Data.txt', 'utf-8', function (err, data) {
     	if(err) throw err;
     	users = data;
 	});
@@ -54,7 +71,7 @@ function getData() {
 
 function setUser(){
 	var fs = require('fs');
-	fs.appendFile('./Data.js',(name+":"+username+":"+password+":"+topics+"|"), function (err) {
+	fs.appendFile('./Data.txt',(name+":"+username+":"+password+":"+topics+"|"), function (err) {
 		if (err) throw err;
 	});
 	console.log("Usuário "+ name +" adicionado ao banco...")
@@ -107,4 +124,23 @@ function getUser(userData){
 		}
 	}
 	return false
+}
+
+
+function getTopic() {
+	var fs = require('fs');
+	fs.readFile('./Topic.txt', 'utf-8', function (err, data) {
+    	if(err) throw err;
+    	users = data;
+	});
+}
+
+function setTopic(m){
+	var msg = m.split(":");
+	var fs = require('fs');
+	fs.appendFile('./Topic.txt',(msg[0]+":"+msg[1]+"|"), function (err) {
+		if (err) throw err;
+	});
+	console.log("Topico "+ msg[0] +" adicionado ao banco...")
+	return "Tópico criado com Sucesso!";
 }

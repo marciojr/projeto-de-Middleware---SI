@@ -8,7 +8,7 @@ function login(){
 		var msg = res.data;
 		alert(msg);
 
-		if(msg.indexOf("sucesso") !== -1){
+		if(msg.indexOf("Sucesso") !== -1){
 			document.location.href = "./tela1.html?username="+username;
 		} else {
 			location.href = "./index.html";
@@ -59,4 +59,36 @@ function getTopics() {
         }  
      }
      return checks;
+}
+
+
+function changeView(){
+	location.href = "./tela2.html";
+
+}
+
+function create(){
+	var connection = new WebSocket('ws://localhost:9080/server');
+	var title = document.getElementById("title").value;
+	var option = document.getElementById("options").value;
+
+	connection.onmessage = function(res){
+		var msg = res.data;
+		alert(msg);
+		if(msg.indexOf("criartopico") !== -1){
+			location.href = "./tela2.html";
+		} else {
+			location.href = "./tela1.html";
+		}
+		
+	}
+
+	connection.onopen = function(){
+		connection.send(title+":"+option);
+		
+	}
+
+	connection.onclose = function(){
+
+	}
 }
