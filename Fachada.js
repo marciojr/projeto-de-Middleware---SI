@@ -4,8 +4,15 @@ function login(){
 
 	var connection = new WebSocket('ws://localhost:9090/server');
 
-	connection.onmessage = function(){
+	connection.onmessage = function(res){
+		var msg = res.data;
+		alert(msg);
 
+		if(msg.indexOf("sucesso") !== -1){
+			document.location.href = "./tela1.html?username="+username;
+		} else {
+			location.href = "./index.html";
+		}
 	}
 
 	connection.onopen = function(){
@@ -23,13 +30,14 @@ function save(){
 	var user = document.getElementById("userName").value;
 	var password = document.getElementById("password").value;
 	var topics = getTopics();
-
+	
 	var connection = new WebSocket('ws://localhost:9090/server');
 
 	connection.onmessage = function(res){
 		var msg = res.data;
-		console.log(msg)
-		console.log("dale")
+		alert(msg);
+		
+		location.href = "./index.html";
 	}
 
 	connection.onopen = function(){

@@ -1,1 +1,1 @@
-marcio mendes:mmcj:1234:nodejs,javascript,ruby|thiago:tas4:viado:java,swift|
+thiago:tas:123:java,nodejs|marcio:mmcj:123:python,swift|
