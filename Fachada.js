@@ -10,6 +10,7 @@ function login(){
 
 		if(msg.indexOf("Sucesso") !== -1){
 			document.location.href = "./tela1.html?username="+username;
+			loadBase();
 		} else {
 			location.href = "./index.html";
 		}
@@ -71,24 +72,68 @@ function create(){
 	var connection = new WebSocket('ws://localhost:9080/server');
 	var title = document.getElementById("title").value;
 	var option = document.getElementById("options").value;
+	
+	if(title == null || title === undefined || title == ""){
+		alert("Favor, preencher o título da discussão!");
+			location.href = "./tela2.html";
+	} else {
+		connection.onmessage = function(res){
+			var msg = res.data;
+			if(msg.indexOf("Sucesso") !== -1){
+				alert(msg);
+				location.href = "./tela1.html";
+				loadBase();
+			} else {
+				alert("Impossível criar tópico!!");
+				location.href = "./tela2.html";
+				
+			}
+			
+		}
 
+		connection.onopen = function(){
+			connection.send(title+":"+option);
+			
+		}
+
+		connection.onclose = function(){
+
+		}
+	}
+}
+
+
+function loadBase() {
+	var connection = new WebSocket('ws://localhost:9070/server');
 	connection.onmessage = function(res){
 		var msg = res.data;
-		alert(msg);
-		if(msg.indexOf("criartopico") !== -1){
-			location.href = "./tela2.html";
-		} else {
-			location.href = "./tela1.html";
-		}
-		
+		addTopic(msg);
 	}
 
 	connection.onopen = function(){
-		connection.send(title+":"+option);
-		
+		connection.send("loadBase");
+			
 	}
 
 	connection.onclose = function(){
 
 	}
+
+}
+
+function addTopic(res){
+	var list_area = document.getElementById(list_area);
+	var size = list_area.children.length
+	alert(size)
+	var newTopic = document.createElement('li');
+	var children = list_area.children.length +1;
+
+//	newTopic.textContent = newTopic.innerText = res;
+
+	newTopic.setAttribute('onClick',"alert(res)");
+	newTopic.setAttribute('id',"own");
+	newTopic.appendChild(document.createTextNode(children))
+	list_area.appendChild(newTopic);
+	list_area.scrollTop = list_area.scrollHeight;
+
 }

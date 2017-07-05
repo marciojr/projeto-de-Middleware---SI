@@ -1,0 +1,39 @@
+.center {
+	margin-left: auto; 
+	margin-right: auto;
+	width: 800px
+}
+ul {
+	margin: 0;
+	padding: 0;
+	list-style-type: none
+}
+fieldset {
+	border: 0
+}
+input {
+	border: 1px solid black;
+	width: 100%
+}
+footer {
+	clear: both
+}
+#list {
+	width: 600px; 
+	float: left
+}
+#users {
+	width: 200px; 
+	float: left
+}
+#list_area {
+	height: 200px; 
+	overflow-y: scroll
+}
+
+.public {
+	background-color: 	#00FF7F
+}
+.own {
+	background-color: 	#FF4500
+}

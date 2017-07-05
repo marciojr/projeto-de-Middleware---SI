@@ -5,7 +5,7 @@ var topics;
 var users;
 var result;
 getData();
-var contador = 0;
+var top = getTopic();
 
 var WebSocketServer = require('ws').Server;
 
@@ -40,6 +40,7 @@ wss.on('connection', function(ws) {
 				result = setUser();
 				console.log(result)
 			}
+			getData();
 			ws.send(result);
 		}
 	});
@@ -55,11 +56,21 @@ wss1.on('connection', function(ws) {
 		var msg = message;
 		var result = setTopic(msg);
 		ws.send(result);
-
 		
 	});
 });
 
+/*Carregando tópicos da base */
+wss2 = new WebSocketServer({port: 9070, path: '/server'});
+wss2.on('connection', function(ws) {
+
+	ws.on('message', function(message) {
+		var msg = message;
+		ws.send(top);
+
+		
+	});
+});
 
 function getData() {
 	var fs = require('fs');
@@ -126,21 +137,42 @@ function getUser(userData){
 	return false
 }
 
-
+var result;
 function getTopic() {
 	var fs = require('fs');
 	fs.readFile('./Topic.txt', 'utf-8', function (err, data) {
     	if(err) throw err;
-    	users = data;
+    	result = getContador(data);
+
 	});
+	return result;
 }
 
 function setTopic(m){
 	var msg = m.split(":");
 	var fs = require('fs');
-	fs.appendFile('./Topic.txt',(msg[0]+":"+msg[1]+"|"), function (err) {
+	var contador = getTopic();
+	console.log(contador);
+	contador = parseInt(contador) + 1;
+	fs.appendFile('./Topic.txt',(msg[0]+":"+msg[1]+":"+contador+"|"), function (err) {
 		if (err) throw err;
 	});
 	console.log("Topico "+ msg[0] +" adicionado ao banco...")
 	return "Tópico criado com Sucesso!";
+}
+
+
+function getContador(data){
+	top = data;
+	if(data == null || data === undefined || data == ""){
+		return 0;
+	} else {
+		var text = data.split("|");
+		var size = text.length;
+		//console.log(size);
+		var text1 = text[size - 2];
+		var text2 = text1.split(":");
+		console.log(text2[2]);
+		return text2[2];
+	}
 }
