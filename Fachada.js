@@ -38,6 +38,10 @@ function save(){
 		var msg = res.data;
 		alert(msg);
 		
+		if(msg.indexOf("Sucesso") !== -1){
+			connection.send("updateUsers")
+		}
+
 		location.href = "./index.html";
 	}
 
@@ -72,15 +76,16 @@ function create(){
 	var connection = new WebSocket('ws://localhost:9080/server');
 	var title = document.getElementById("title").value;
 	var option = document.getElementById("options").value;
-	
+
 	if(title == null || title === undefined || title == ""){
-		alert("Favor, preencher o título da discussão!");
+		alert("Favor, adicionar o título do Tópico!");
 			location.href = "./tela2.html";
 	} else {
 		connection.onmessage = function(res){
 			var msg = res.data;
 			if(msg.indexOf("Sucesso") !== -1){
 				alert(msg);
+				connection.send("updateTopics");
 				location.href = "./tela1.html";
 				loadBase();
 			} else {

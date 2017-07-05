@@ -5,7 +5,8 @@ var topics;
 var users;
 var result;
 getData();
-var top = getTopic();
+var top
+getTopic();
 
 var WebSocketServer = require('ws').Server;
 
@@ -26,7 +27,7 @@ wss.on('connection', function(ws) {
 			result = verificator();
 	
 			ws.send(result)
-		}else{
+		}else if(msg[0] == 'save'){
 			//comandos save
 			name = msg[1];
 			username = msg[2];
@@ -40,23 +41,28 @@ wss.on('connection', function(ws) {
 				result = setUser();
 				console.log(result)
 			}
-			getData();
 			ws.send(result);
+		}else{
+			getData()
 		}
 	});
 });
 
 
 
-/*Conexão da tela de discussão - Tela 2*/
+/*Conexão da tela de Tópicos - Tela 2*/
 wss1 = new WebSocketServer({port: 9080, path: '/server'});
 wss1.on('connection', function(ws) {
 
 	ws.on('message', function(message) {
 		var msg = message;
-		var result = setTopic(msg);
-		ws.send(result);
-		
+
+		if(msg == 'updateTopics'){
+			getTopic();
+		}else{
+			var result = setTopic(msg);
+			ws.send(result);
+		}	
 	});
 });
 
@@ -137,23 +143,26 @@ function getUser(userData){
 	return false
 }
 
-var result;
 function getTopic() {
 	var fs = require('fs');
 	fs.readFile('./Topic.txt', 'utf-8', function (err, data) {
     	if(err) throw err;
-    	result = getContador(data);
+    	top = data;
 
 	});
-	return result;
 }
 
 function setTopic(m){
 	var msg = m.split(":");
 	var fs = require('fs');
-	var contador = getTopic();
-	console.log(contador);
-	contador = parseInt(contador) + 1;
+
+	var aux = top;
+	console.log("top :   " + aux)
+
+	var index = getContador(aux);
+	console.log("valor do contador: "+index);
+
+	var contador = parseInt(index) + 1;
 	fs.appendFile('./Topic.txt',(msg[0]+":"+msg[1]+":"+contador+"|"), function (err) {
 		if (err) throw err;
 	});
@@ -163,7 +172,6 @@ function setTopic(m){
 
 
 function getContador(data){
-	top = data;
 	if(data == null || data === undefined || data == ""){
 		return 0;
 	} else {

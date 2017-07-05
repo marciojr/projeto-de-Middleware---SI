@@ -1,1 +1,1 @@
-asdasd:Java:NaN|
+String:JavaScript:1|ios:Swift:2|fs:Node.js:3|identacao:Python:4|
