@@ -14,22 +14,30 @@
 		<nav>
 		</nav>
 		<div class="center">
-			<br>
-			<br>
 			<section id="chat">
-				<h2>Chat:</h2>
+			<h2 id="chat_label"></h2>	
 				<ul id="chat_area"></ul>
-				<form id="char_form">
+				<form id="chat_form" onsubmit="return false">
 					<fieldset>
-						<input type="text" name="chat_input" value="" id="chat_input"/>
+						<input type="text" name="chat_input" id="chat_input" autocomplete="off">
 					</fieldset> 
+					<fieldset>
+						<container>
+						<input type="button" name="enviar" value="Enviar"  onclick="send()">
+						<input type="button" name="desconectar" value="Desconectar" onclick="disconnect()">
+						</container>
+					</fieldset>
 				</form>
 			</section>
 			<section id="topics">
 				<h2>Tópicos Atuais:</h2>
 				<ul id="topics_area"></ul>
+				<form id="topic_form">
+					<fieldset>
+					</fieldset>
+				</form>
 			</section>
 		</div>
 	</body>
-	<script type="text/javascript" src="ws-client.js"></script>
+	<script type="text/javascript" src="Fachada3.js"></script>
 </html>

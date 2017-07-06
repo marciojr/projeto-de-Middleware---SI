@@ -1,3 +1,4 @@
+
 function login(){
 	var username = document.getElementById("login_username").value;
 	var password = document.getElementById("login_password").value;
@@ -64,39 +65,4 @@ function getTopics() {
         }  
      }
      return checks;
-}
-
-function create(){
-	var connection = new WebSocket('ws://localhost:9080/server');
-	var title = document.getElementById("title").value;
-	var option = document.getElementById("options").value;
-
-	if(title == null || title === undefined || title == ""){
-		alert("Por Favor, adicionar o título do Tópico!");
-			location.href = "./tela2.html";
-	} else {
-		connection.onmessage = function(res){
-			var msg = res.data;
-			if(msg.indexOf("Sucesso") !== -1){
-				alert(msg);
-				connection.send("updateTopics");
-				location.href = "./tela3.html";
-
-			} else {
-				alert("Impossível criar tópico!!");
-				location.href = "./tela2.html";
-				
-			}
-			
-		}
-
-		connection.onopen = function(){
-			connection.send(title+":"+option);
-			
-		}
-
-		connection.onclose = function(){
-
-		}
-	}
 }

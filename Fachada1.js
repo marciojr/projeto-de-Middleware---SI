@@ -1,3 +1,5 @@
+/*Fachada da Tela001 - Tela de Listagem dos Tópicos*/
+
 window.onload = function() {
 
 	var url = document.location.href;
@@ -15,7 +17,7 @@ window.onload = function() {
 			var tokens = topic[i].split(":");
 			
 			if(isTopic(topics,tokens[1])){
-				addTopic(" ID[ "+ tokens[2] + " ] Tópico[ "+ tokens[0] + " ] Tipo[ "+ tokens[1] + " ]",username);
+				addTopic(" ID[ "+ tokens[2] + " ] Tópico[ "+ tokens[0] + " ] Tipo[ "+ tokens[1] + " ]",username, tokens[0]);
 			}
 		};
 	}
@@ -35,12 +37,13 @@ function addUserName(){
 
 }
 
-function addTopic(msg,username){
+function addTopic(msg,username,name_topic){
 	var ul = document.getElementById("list_area");
 	var li = document.createElement("li");
 	li.setAttribute("style", "font-size: 20px");
 	li.setAttribute("id","topic")
-	li.setAttribute("onClick","setChatDiscussion()")
+	li.setAttribute("value", name_topic);
+	li.setAttribute("onClick","setChatDiscussion(this)");
 	li.appendChild(document.createTextNode(msg));
 	ul.appendChild(li);
 	ul.scrollTop = list_area.scrollHeight;
@@ -48,7 +51,10 @@ function addTopic(msg,username){
 }
 
 function changeView(){
-	location.href = "./tela2.html";
+	var url = document.location.href;
+	var helper = url.split("?");
+	var username = helper[1].split("&")[0];
+	location.href = "./tela2.html?"+username;
 
 }
 
@@ -63,15 +69,13 @@ function isTopic(topics,topic){
 	return false
 }
 
-function setChatDiscussion(){
+function setChatDiscussion(res){
 	var url = document.location.href;
 	var helper = url.split("?");
 	var username = helper[1].split("&")[0];
 	var topics = helper[1].split("&")[1];
 
 	if (confirm("Deseja Acessar o Chat deste Tópico?" ) == true) {
-        document.location.href = "./tela3.html?"+username+"&"+topics;
+        document.location.href = "./tela3.html?"+res+"&"+topics+"&"+username;
     } 
 }
-
-
