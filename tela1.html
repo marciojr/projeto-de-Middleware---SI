@@ -8,23 +8,26 @@
 	<body>
 		<header class="center">
 		 <hgroup>
-				<h1>Fórum</h1>
+				<h1 align="center">Lista de Discussões sobre Tópicos</h1>
 			</hgroup>
 		</header>
 		<nav>
 		</nav>
 		<div class="center">
+			<h2 id="username"></h2>
 			<section id="list">
-				<form id="chat_form">
+				<ul id="list_area"></ul>
+				<br>
+				<br>
+				<form id="char_form">
 					<fieldset>
-						<ul id="list_area">
-							
-						</ul>
+						<input type="button" value="Criar Discussão" onclick="changeView()" id="chat_input" align="center">
 					</fieldset> 
-					<input type="button" value="Criar Discussão" onclick="changeView()">
 				</form>
 			</section>
+					
 		</div>
 	</body>
-	<script type="text/javascript" src="Fachada.js"></script>
+	<script type="text/javascript" src="Fachada1.js"></script>
 </html>
+

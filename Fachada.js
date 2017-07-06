@@ -6,12 +6,12 @@ function login(){
 
 	connection.onmessage = function(res){
 		var msg = res.data;
-		alert(msg);
 
-		if(msg.indexOf("Sucesso") !== -1){
-			document.location.href = "./tela1.html?username="+username;
-			loadBase();
+		if(msg.indexOf("Incorretos") === -1 && msg.indexOf("Inexistente") === -1){
+			alert("Usuário Logado com Sucesso!");
+			document.location.href = "./tela1.html?"+username+"&"+msg;
 		} else {
+			alert(msg);
 			location.href = "./index.html";
 		}
 	}
@@ -66,19 +66,13 @@ function getTopics() {
      return checks;
 }
 
-
-function changeView(){
-	location.href = "./tela2.html";
-
-}
-
 function create(){
 	var connection = new WebSocket('ws://localhost:9080/server');
 	var title = document.getElementById("title").value;
 	var option = document.getElementById("options").value;
 
 	if(title == null || title === undefined || title == ""){
-		alert("Favor, adicionar o título do Tópico!");
+		alert("Por Favor, adicionar o título do Tópico!");
 			location.href = "./tela2.html";
 	} else {
 		connection.onmessage = function(res){
@@ -86,8 +80,8 @@ function create(){
 			if(msg.indexOf("Sucesso") !== -1){
 				alert(msg);
 				connection.send("updateTopics");
-				location.href = "./tela1.html";
-				loadBase();
+				location.href = "./tela3.html";
+
 			} else {
 				alert("Impossível criar tópico!!");
 				location.href = "./tela2.html";
@@ -105,40 +99,4 @@ function create(){
 
 		}
 	}
-}
-
-
-function loadBase() {
-	var connection = new WebSocket('ws://localhost:9070/server');
-	connection.onmessage = function(res){
-		var msg = res.data;
-		addTopic(msg);
-	}
-
-	connection.onopen = function(){
-		connection.send("loadBase");
-			
-	}
-
-	connection.onclose = function(){
-
-	}
-
-}
-
-function addTopic(res){
-	var list_area = document.getElementById(list_area);
-	var size = list_area.children.length
-	alert(size)
-	var newTopic = document.createElement('li');
-	var children = list_area.children.length +1;
-
-//	newTopic.textContent = newTopic.innerText = res;
-
-	newTopic.setAttribute('onClick',"alert(res)");
-	newTopic.setAttribute('id',"own");
-	newTopic.appendChild(document.createTextNode(children))
-	list_area.appendChild(newTopic);
-	list_area.scrollTop = list_area.scrollHeight;
-
 }

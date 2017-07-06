@@ -20,7 +20,6 @@ wss.on('connection', function(ws) {
 
 		if(msg[0] == 'login'){
 			// comandos do login
-			getData()
 			username = msg[1];
 			password = msg[2];
 			console.log("user: " + username + "   pass: " + password)
@@ -33,7 +32,6 @@ wss.on('connection', function(ws) {
 			username = msg[2];
 			password = msg[3];
 			topics = msg[4];
-			getData()
 			
 			if(hasUsername()){
 				result = "Username Indisponível!";
@@ -107,16 +105,16 @@ function hasUsername(){
 }
 
 function verificator(){
-	var index = users.indexOf(username);
+	var exist = isUserName(username);
 	
-	if(index === -1){
+	if(!exist){
 		console.log( "Usuário Inexistente.")
 		return "Usuário Inexistente.";
 	}else{
 		var data = getUser(users.split("|"));
-		if(data){
+		if(data != "Error"){
 			console.log( "Usuário Logado com Sucesso!")
-			return "Usuário Logado com Sucesso!"
+			return data
 		}else{
 			console.log( "Senha e/ou Username Incorretos!")
 			return "Senha e/ou Username Incorretos!"
@@ -124,19 +122,31 @@ function verificator(){
 	}
 }
 
+function isUserName(){
+	var helper = users.split("|");
+	for (var i = 0; i < helper.length; i++) {
+		var tokens = helper[i].split(":");
+		var auxName = tokens[1];
+			
+		if(username == auxName){
+			return true
+		}
+	}  	
+	return false
+}
+
 function getUser(userData){
 	for (var i = 0; i < userData.length; i++) {
 		var tokens = userData[i].split(":");
 		var auxName = tokens[1];
 		var auxPass = tokens[2];
-
-		console.log(auxName)
-
+		var topics = tokens[3];
+		
 		if(username == auxName){
 			if(password == auxPass){
-				return true
+				return topics
 			}else{
-				return false
+				return "Error"
 			}
 		}
 	}

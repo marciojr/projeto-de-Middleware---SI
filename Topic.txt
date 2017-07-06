@@ -1,1 +1,1 @@
-String:JavaScript:1|ios:Swift:2|fs:Node.js:3|identacao:Python:4|
+Npm:Nodejs:1|Ios:Swift:2|Identação:Python:3|function:JavaScript:4|mvc:Ruby:5|OO:Java:6|webserver:JavaScript:7|ws:Nodejs:8|ws:Nodejs:9|string:JavaScript:10|dale:Python:11|asd:Nodejs:12|
