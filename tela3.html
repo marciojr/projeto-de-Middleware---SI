@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<title>Node Chat</title>
+		<title>Discussão</title>
 		<link rel="stylesheet" href="css.css" />
 	</head>
 	<body>
@@ -19,25 +19,23 @@
 				<ul id="chat_area"></ul>
 				<form id="chat_form" onsubmit="return false">
 					<fieldset>
-						<input type="text" name="chat_input" id="chat_input" autocomplete="off">
+						<input type="text" name="chat_input" id="chat_input" value="" autocomplete="off">
 					</fieldset> 
-					<fieldset>
-						<container>
-						<input type="button" name="enviar" value="Enviar"  onclick="send()">
+						<container id="enviar" style=" float: left; width: 50%;">
+						<input type="button" name="enviar" value="Enviar" onclick="send()">
+						
+						</container>
+						<container id="desconectar" style="float: right; width: 50%;">
 						<input type="button" name="desconectar" value="Desconectar" onclick="disconnect()">
 						</container>
-					</fieldset>
 				</form>
 			</section>
 			<section id="topics">
 				<h2>Tópicos Atuais:</h2>
 				<ul id="topics_area"></ul>
-				<form id="topic_form">
-					<fieldset>
-					</fieldset>
-				</form>
 			</section>
 		</div>
 	</body>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script type="text/javascript" src="Fachada3.js"></script>
 </html>

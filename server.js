@@ -7,12 +7,21 @@ var result;
 getData();
 var top
 getTopic();
+var clients;
 
 var WebSocketServer = require('ws').Server;
 
+
 /*Conexão do Index - Registrar e Logar*/
 wss = new WebSocketServer({port: 9090, path: '/server'});
+var clients = {};
+
+var id = 0;
 wss.on('connection', function(ws) {
+	ws.id = id++;
+	
+	clients[id] = ws;
+
 
 	ws.on('message', function(message) {
 
@@ -64,6 +73,7 @@ wss1.on('connection', function(ws) {
 	});
 });
 
+
 /*Carregando tópicos da base */
 wss2 = new WebSocketServer({port: 9070, path: '/server'});
 wss2.on('connection', function(ws) {
@@ -75,6 +85,32 @@ wss2.on('connection', function(ws) {
 		
 	});
 });
+
+
+
+/*Criando o Server-Sent Events*/
+function updateListTopic(){
+	var http = require("http");
+
+var serverRead;
+
+http.createServer(function(req, res) {
+
+    res.writeHeader(200, {
+        "Content-Type": "text/event-stream",
+        "Cache-Control": "no-cache",
+        "Connection": "keep-alive",
+        "Access-Control-Allow-Origin": "*"
+    });
+    
+    serverRead = res;
+
+}).listen(9090);	
+}
+
+
+
+
 
 function getData() {
 	var fs = require('fs');

@@ -1,1 +1,1 @@
-marcio mendes:mmcj:1234:Nodejs,Swift,Ruby|dsada:jjj:12345:Java,Nodejs,Python,Swift,JavaScript,Ruby|Marilda Sales de Alheiros:mari:123456:Nodejs,Python,JavaScript|Thiago:tas:123:Java|
+thiago:tas:123:Java,Nodejs,Python,Swift,JavaScript,Ruby|
