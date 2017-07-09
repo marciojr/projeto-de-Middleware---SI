@@ -23,7 +23,7 @@ window.onload = function() {
 	}
 
 	connection.onopen = function(){
-		connection.send("loadBase");
+		connection.send("@#$%loadBase%$#@");
 			
 	}
 
