@@ -6,7 +6,6 @@ function create(){
 	var option = document.getElementById("options").value;
 	var url = document.location.href;
 	var helper = url.split("?");
-	var user = helper[1];
 
 	if(title == null || title === undefined || title == ""){
 		alert("Por Favor, adicionar o título do Tópico!");
@@ -17,7 +16,7 @@ function create(){
 			if(msg.indexOf("Sucesso") !== -1){
 				alert(msg);
 				connection.send("updateTopics");
-				location.href = "./tela3.html?"+title+"&"+option+"&"+user;
+				location.href = "./tela3.html?"+title+"&"+option+"&"+helper[1];
 
 			} else {
 				alert("Impossível criar tópico!!");

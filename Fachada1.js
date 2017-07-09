@@ -53,8 +53,7 @@ function addTopic(msg,username,name_topic){
 function changeView(){
 	var url = document.location.href;
 	var helper = url.split("?");
-	var username = helper[1].split("&")[0];
-	location.href = "./tela2.html?"+username;
+	location.href = "./tela2.html?"+helper[1];
 
 }
 
