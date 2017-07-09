@@ -1,5 +1,5 @@
 /*Fachada da Tela002 - Tela de Criação da Discussão*/
-
+var id ; 
 function create(){
 	var connection = new WebSocket('ws://localhost:9080/server');
 	var title = document.getElementById("title").value;
@@ -16,14 +16,14 @@ function create(){
 			if(msg.indexOf("Sucesso") !== -1){
 				alert(msg);
 				connection.send("updateTopics");
-				location.href = "./tela3.html?"+title+"&"+option+"&"+helper[1];
-
-			} else {
+			} else if(msg.indexOf("id") !== -1) {
+				id = msg.split(":")[1];	
+				location.href = "./tela3.html?"+title+"&"+option+"&"+helper[1]+"&"+id;			
+			}else{
 				alert("Impossível criar tópico!!");
-				location.href = "./tela2.html";
-				
+				var url = document.location.href;
+				location.href = url;
 			}
-			
 		}
 
 		connection.onopen = function(){

@@ -66,6 +66,9 @@ wss1.on('connection', function(ws) {
 
 		if(msg == 'updateTopics'){
 			getTopic();
+			var index = getContador(top);
+			var count = parseInt(index) + 1;
+			ws.send("id:"+count)
 		}else{
 			var result = setTopic(msg);
 			ws.send(result);
@@ -107,10 +110,6 @@ http.createServer(function(req, res) {
 
 }).listen(9090);	
 }
-
-
-
-
 
 function getData() {
 	var fs = require('fs');
@@ -203,11 +202,8 @@ function setTopic(m){
 	var fs = require('fs');
 
 	var aux = top;
-	console.log("top :   " + aux)
-
 	var index = getContador(aux);
-	console.log("valor do contador: "+index);
-
+	
 	var contador = parseInt(index) + 1;
 	fs.appendFile('./Topic.txt',(msg[0]+":"+msg[1]+":"+contador+"|"), function (err) {
 		if (err) throw err;

@@ -17,7 +17,7 @@ window.onload = function() {
 			var tokens = topic[i].split(":");
 			
 			if(isTopic(topics,tokens[1])){
-				addTopic(" ID[ "+ tokens[2] + " ] Tópico[ "+ tokens[0] + " ] Tipo[ "+ tokens[1] + " ]",username, tokens[0]+":"+tokens[1]);
+				addTopic(" ID[ "+ tokens[2] + " ] Tópico[ "+ tokens[0] + " ] Tipo[ "+ tokens[1] + " ]",username, tokens[0]+":"+tokens[1]+":"+tokens[2]);
 			}
 		};
 	}
@@ -30,7 +30,7 @@ window.onload = function() {
 	connection.onclose = function(){
 
 	}
-
+	updateListTopics(url);
 }
 
 function addUserName(){
@@ -72,7 +72,7 @@ function setChatDiscussion(res){
 	var value = $(res).attr('value');
 	var aux = value.split(":")
 
-
+	console.log("dasd " + value)
 	var url = document.location.href;
 	var helper = url.split("?");
 	var username = helper[1].split("&")[0];
@@ -81,6 +81,12 @@ function setChatDiscussion(res){
 	console.log(res);
 
 	if (confirm("Deseja Acessar o Chat deste Tópico?" ) == true) {
-        document.location.href = "./tela3.html?"+aux[0]+"&"+aux[1]+"&"+username+"&"+topics;
+        document.location.href = "./tela3.html?"+aux[0]+"&"+aux[1]+"&"+username+"&"+topics+"&"+aux[2];
     } 
+}
+
+function updateListTopics(url){
+	var interval = setInterval( function() {
+		location.href = url;
+	},10000);
 }
