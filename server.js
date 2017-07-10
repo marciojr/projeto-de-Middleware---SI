@@ -9,27 +9,9 @@ var top
 getTopic();
 var clients;
 
+
+/*     Server-Send Events     */
 var http = require("http");
-//const f3 = require('./Fachada3.js');
-
-/*    Server-Sent Events    */
-/*Publisher*/
-/*
-const mqtt = require('mqtt')
-
-//const client = mqtt.connect('mqtt://broker.hivemq.com')
-const client = mqtt.connect ('mqtt://test.mosquitto.org')
-client.on('message', () => {
-console.log('message')
-})
-
-function sendData(dados) {
-console.log('publishing')
-        client.publish('sse', dados);
-console.log('published '+ dados);
-
-}
-*/
 
 var clients = {};
 var id=0;
@@ -44,13 +26,6 @@ http.createServer(function(req, res){
         "Access-Control-Allow-Origin": "*"
     });
 
-    res.on('finish', function(){
-        delete clients[my_id];
-    });
-
-    res.on('close', function(){
-        delete clients[my_id];
-    });
 }).listen(9000);
 
 function sendEventSource(data){
@@ -61,7 +36,7 @@ function sendEventSource(data){
     }
 }
 
-function carregar (id, titulo, topico){
+function uploadListTopicChat(id, titulo, topico){
     var data = {
         id: id,
         titulo: titulo, 
@@ -70,28 +45,6 @@ function carregar (id, titulo, topico){
 
     sendEventSource(data);
 }
-
-/*Subscriber*/
-/*
-const cliente = mqtt.connect ('mqtt://test.mosquitto.org')
-
-cliente.on('connect', () => {
-    client.subscribe('sse'); 
-console.log('connected');
-
-})
-
-client.on('message', (topic,message) => {
-   
-    f3.upload(message);  
-
-
-console.log('received message %s %s', topic, message)
-
-})
-
-*/
-
 
 /*------------------------------------------------------------------*/
 
@@ -147,7 +100,7 @@ wss1.on('connection', function(ws) {
 			var result = setTopic(msg);
             var index = getContador(top);
             var count = parseInt(index) + 1;
-            carregar(count,msg.split(':')[0], msg.split(':')[1]);
+            uploadListTopicChat(count,msg.split(':')[0], msg.split(':')[1]);
 			ws.send(result);
 		}	
 	});
@@ -175,8 +128,10 @@ wss2.on('connection', function(ws) {
 			ws.sockname = helper[3]+":"+helper[1];
 			updateWSList(helper[2],ws,"add",null);
 		}else if (msg.indexOf("@#$%delete%$#@") !== -1){
-			var helper = msg.split(":")
-            updateListTopic(helper[2],null,"delete",helper[1]+":"+helper[3])
+			console.log(msg)
+            console.log("adasdasdasdasdasda")
+            var helper = msg.split(":")
+            updateWSList(helper[2],null,"delete",helper[1]+":"+helper[3])
 		}else if(msg.indexOf("@#%$changeChat%$#@") !== -1){
 
 		}else if(msg.indexOf("@#$%broadCastMsg%$#@") !== -1){
@@ -307,15 +262,12 @@ function updateWSList(type,ws,command,name){
         if(command == 'add'){
         	wss_JAVA.push(ws)
         }else{
-        	var found = false;
         	for (var i = 0; i < wss_JAVA.length; i++) {
-        		if(found){
-        			wss_JAVA[i-1] = wss_JAVA[i]
-        		}
-        		if(wss_JAVA[i].sockname == name && !found){
+        		if(wss_JAVA[i] != undefined){
+                    if(wss_JAVA[i].sockname == name){
                     delete wss_JAVA[i]
-        			found = true
-        		}
+                    }
+                }
         	};
         }
         break; 
@@ -323,80 +275,65 @@ function updateWSList(type,ws,command,name){
        	if(command == 'add'){
        		wss_PYTHON.push(ws)
         }else{
-        	var found = false;
         	for (var i = 0; i < wss_PYTHON.length; i++) {
-        		if(found){
-        			wss_PYTHON[i-1] = wss_PYTHON[i]
-        		}
-        		if(wss_PYTHON[i].sockname == name && !found){
-        			delete wss_PYTHON[i]
-        			found = true
-        		}
-        	};
+                if(wss_PYTHON[i] != undefined){
+                    if(wss_PYTHON[i].sockname == name){
+                    delete wss_PYTHON[i]
+                    }
+                }
+            };
         }
         break; 
     case 'Nodejs':
         if(command == 'add'){
         	wss_NODEJS.push(ws)
         }else{
-        	var found = false;
         	for (var i = 0; i < wss_NODEJS.length; i++) {
-        		if(found){
-        			wss_NODEJS[i-1] = wss_NODEJS[i]
-        		}
-        		if(wss_NODEJS[i].sockname == name && !found){
-        			delete wss_NODEJS[i]
-        			found = true
-        		}
-        	};
+                if(wss_NODEJS[i] != undefined){
+                    if(wss_NODEJS[i].sockname == name){
+                    delete wss_NODEJS[i]
+                    }
+                }
+            };
         }
         break;
     case 'Swift':
         if(command == 'add'){
         	wss_SWIFT.push(ws)
         }else{
-        	var found = false;
         	for (var i = 0; i < wss_SWIFT.length; i++) {
-        		if(found){
-        			wss_SWIFT[i-1] = wss_SWIFT[i]
-        		}
-        		if(wss_SWIFT[i].sockname == name && !found){
-        			delete wss_SWIFT[i]
-        			found = true
-        		}
-        	};
+                if(wss_SWIFT[i] != undefined){
+                    if(wss_SWIFT[i].sockname == name){
+                    delete wss_SWIFT[i]
+                    }
+                }
+            };
         }
         break; 
     case 'JavaScript':
         if(command == 'add'){
         	wss_JS.push(ws)
         }else{
-        	var found = false;
         	for (var i = 0; i < wss_JS.length; i++) {
-        		if(found){
-        			wss_JS[i-1] = wss_JS[i]
-        		}
-        		if(wss_JS[i].sockname == name && !found){
-        			delete wss_JS[i]
-        			found = true
-        		}
-        	};
+                if(wss_JS[i] != undefined){
+                    if(wss_JS[i].sockname == name){
+                    delete wss_JS[i]
+                    }
+                }
+            };
         }
         break; 
     case 'Ruby':
         if(command == 'add'){
         	wss_RUBY.push(ws)
         }else{
-        	var found = false;
         	for (var i = 0; i < wss_RUBY.length; i++) {
-        		if(found){
-        			wss_RUBY[i-1] = wss_RUBY[i]
-        		}
-        		if(wss_RUBY[i].sockname == name && !found){
-        			delete wss_RUBY[i]
-        			found = true
-        		}
-        	};
+                if(wss_RUBY[i] != undefined){
+                    if(wss_RUBY[i].sockname == name){
+                    delete wss_RUBY[i]
+                    }
+                }
+            };
         }
         break;  
 	}
@@ -406,45 +343,57 @@ function broadCastMsg(id,type,user,msg){
 	switch (type) {
     case 'Java':
        	for (var i = 0; i < wss_JAVA.length; i++) {
-       		if(wss_JAVA[i].sockname.split(":")[0] === id){
-       			wss_JAVA[i].send("@#%$broadCastMsg@#%$:"+ user+ ":"+ msg);
-       		}
+       		if(wss_JAVA[i] != undefined){
+                if(wss_JAVA[i].sockname.split(":")[0] === id){
+                    wss_JAVA[i].send("@#%$broadCastMsg@#%$:"+ user+ ":"+ msg);
+                }
+            }
        	};
-        break; 
+        break;
     case 'Python':
        	for (var i = 0; i < wss_PYTHON.length; i++) {
-       		if(wss_PYTHON[i].sockname.split(":")[0] === id){
-       			wss_PYTHON[i].send("@#%$broadCastMsg@#%$:"+ user+ ":"+ msg);
-       		}
-       	};
+            if(wss_PYTHON[i] != undefined){
+                if(wss_PYTHON[i].sockname.split(":")[0] === id){
+                    wss_PYTHON[i].send("@#%$broadCastMsg@#%$:"+ user+ ":"+ msg);
+                }
+            }
+        };
         break; 
     case 'Nodejs':
         for (var i = 0; i < wss_NODEJS.length; i++) {
-       		if(wss_NODEJS[i].sockname.split(":")[0] === id){
-       			wss_NODEJS[i].send("@#%$broadCastMsg@#%$:"+ user+ ":"+ msg);
-       		}
-       	};
+            if(wss_NODEJS[i] != undefined){
+                if(wss_NODEJS[i].sockname.split(":")[0] === id){
+                    wss_NODEJS[i].send("@#%$broadCastMsg@#%$:"+ user+ ":"+ msg);
+                }
+            }
+        };
         break;
     case 'Swift':
         for (var i = 0; i < wss_SWIFT.length; i++) {
-       		if(wss_SWIFT[i].sockname.split(":")[0] === id){
-       			wss_SWIFT[i].send("@#%$broadCastMsg@#%$:"+ user+ ":"+ msg);
-       		}
-       	};
-        break; 
+            if(wss_SWIFT[i] != undefined){
+                if(wss_SWIFT[i].sockname.split(":")[0] === id){
+                    wss_SWIFT[i].send("@#%$broadCastMsg@#%$:"+ user+ ":"+ msg);
+                }
+            }
+        };
+        break;
     case 'JavaScript':
        for (var i = 0; i < wss_JS.length; i++) {
-       		if(wss_JS[i].sockname.split(":")[0] === id){
-       			wss_JS[i].send("@#%$broadCastMsg@#%$:"+ user+ ":"+ msg);
-       		}
-       	};
+            if(wss_JS[i] != undefined){
+                if(wss_JS[i].sockname.split(":")[0] === id){
+                    wss_JS[i].send("@#%$broadCastMsg@#%$:"+ user+ ":"+ msg);
+                }
+            }
+        };
         break; 
     case 'Ruby':
         for (var i = 0; i < wss_RUBY.length; i++) {
-       		if(wss_RUBY[i].sockname.split(":")[0] === id){
-       			wss_RUBY[i].send("@#%$broadCastMsg@#%$:"+ user+ ":"+ msg);
-       		}
-       	};
+            if(wss_RUBY[i] != undefined){
+                if(wss_RUBY[i].sockname.split(":")[0] === id){
+                    wss_RUBY[i].send("@#%$broadCastMsg@#%$:"+ user+ ":"+ msg);
+                }
+            }
+        };
         break;  
 	}
 }

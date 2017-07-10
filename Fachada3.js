@@ -96,10 +96,12 @@ function send(msg){
 		document.getElementById("chat_input").value = "";
 		conn.send("@#$%broadCastMsg%$#@:" + id + ":" + topic + ":" + user + ":" + chat_input);
 		show = true;
+
 	}else if(msg == 'connect'){
 		show = true;
 		chat_input = "Você entrou no chat...";
 		conn.send("@#$%broadCastMsg%$#@:"+ id + ":" + topic + ":" + user + ":" + "Usuário "+ user + " entrou no chat...");
+
 	}else if(msg.indexOf("sendedMsg") !== -1){
 		var helper = msg.split(":");
 		if(helper[2] == user){
@@ -112,6 +114,7 @@ function send(msg){
 			}
 			show = true;
 		}
+		
 	}else if(msg == 'disconnect'){
 		show = false;
 		conn.send("@#$%delete%$#@:" + id + ":" + topic + ":" + user)
@@ -134,12 +137,8 @@ function disconnect(){
 
 
 
-function upload(msg){
-
-	console.log('ENTREI NA FACHADA!! '+ msg);
-}
-
- var source = new EventSource("http://localhost:9000");
+/*   Server-Send Events   */
+var source = new EventSource("http://localhost:9000");
 
     source.onmessage = function(event) {
     	var data = JSON.parse(event.data); 
@@ -147,4 +146,4 @@ function upload(msg){
     	if(isTopic(user_topic,data.topico)){
     		addTopic(" ID[ "+ data.id + " ] Tópico[ "+ data.titulo + " ] Tipo[ "+ data.topico + " ]",user, data.titulo+":"+data.topico+":"+data.id);	
     	}
-}
+	}

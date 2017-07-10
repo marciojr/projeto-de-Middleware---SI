@@ -1,1 +1,1 @@
-Npm:Nodejs:1|Ios:Swift:2|Identação:Python:3|function:JavaScript:4|mvc:Ruby:5|OO:Java:6|webserver:JavaScript:7|ws:Nodejs:8|ws:Nodejs:9|dale:Java:10|asdasda:Java:11|Massa dmais:Nodejs:12|asdasdaaaaaaaa:Python:13|
+Npm:Nodejs:1|Ios:Swift:2|Identação:Python:3|function:JavaScript:4|mvc:Ruby:5|OO:Java:6|webserver:JavaScript:7|ws:Nodejs:8|ws:Nodejs:9|dale:Java:10|asdasda:Java:11|Massa dmais:Nodejs:12|asdasdaaaaaaaa:Python:13|aeee:Python:14|asdsadas:Python:15|adaaw:Java:16|string:Swift:17|
