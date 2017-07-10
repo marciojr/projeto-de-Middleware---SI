@@ -72,14 +72,11 @@ function setChatDiscussion(res){
 	var value = $(res).attr('value');
 	var aux = value.split(":")
 
-	console.log("dasd " + value)
 	var url = document.location.href;
 	var helper = url.split("?");
 	var username = helper[1].split("&")[0];
 	var topics = helper[1].split("&")[1];
 	
-	console.log(res);
-
 	if (confirm("Deseja Acessar o Chat deste Tópico?" ) == true) {
         document.location.href = "./tela3.html?"+aux[0]+"&"+aux[1]+"&"+username+"&"+topics+"&"+aux[2];
     } 

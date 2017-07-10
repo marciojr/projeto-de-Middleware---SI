@@ -20,7 +20,7 @@ window.onload = function() {
 		var msg = res.data;
 		
 		if(msg.indexOf("@#%$broadCastMsg@#%$") !== -1){
-			send("sendedMsg:"+msg.split(":")[1])
+			send("sendedMsg:"+msg);
 		}else{
 			var topics = msg.split("|");
 		
@@ -88,24 +88,47 @@ function setChatDiscussion(res){
 
 function send(msg){
 	var chat_input;
+	var show;
+
 	if(msg == "html"){
 		chat_input = document.getElementById("chat_input").value;
 		document.getElementById("chat_input").value = "";
 		conn.send("@#$%broadCastMsg%$#@:" + id + ":" + topic + ":" + user + ":" + chat_input);
+		show = true;
 	}else if(msg == 'connect'){
+		show = true;
 		chat_input = "Você entrou no chat...";
 		conn.send("@#$%broadCastMsg%$#@:"+ id + ":" + topic + ":" + user + ":" + "Usuário "+ user + " entrou no chat...");
 	}else if(msg.indexOf("sendedMsg") !== -1){
-		chat_input = msg.split(":")[1];
+		var helper = msg.split(":");
+		if(helper[2] == user){
+			show = false;
+		}else{
+			if(helper[3].indexOf("Usuário") !== -1){
+				chat_input = helper[3];
+			}else{
+				chat_input = "[ "+ helper[2] + " ]  " + helper[3];
+			}
+			show = true;
+		}
+	}else if(msg == 'disconnect'){
+		show = false;
+		conn.send("@#$%delete%$#@:" + id + ":" + topic + ":" + user)
 	}
 	
-	var ul = document.getElementById("chat_area");
-	var li = document.createElement("li");
-	li.setAttribute("id","chat_msg");
-	li.appendChild(document.createTextNode(chat_input));
-	ul.appendChild(li);
-	ul.scrollTop = ul.scrollHeight;
+	if(show){
+		var ul = document.getElementById("chat_area");
+		var li = document.createElement("li");
+		li.setAttribute("id","chat_msg");
+		li.appendChild(document.createTextNode(chat_input));
+		ul.appendChild(li);
+		ul.scrollTop = ul.scrollHeight;
+	}
+}
 
+function disconnect(){
+	console.log("disconnect")
+	send("disconnect")
 }
 
 

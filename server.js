@@ -40,7 +40,6 @@ wss.on('connection', function(ws) {
 			// comandos do login
 			username = msg[1];
 			password = msg[2];
-			console.log("user: " + username + "   pass: " + password)
 			result = verificator();
 	
 			ws.send(result)
@@ -97,14 +96,16 @@ wss2.on('connection', function(ws) {
 
 	ws.on('message', function(message) {
 		var msg = message;
+
 		if(msg == '@#$%loadBase%$#@'){
 			ws.send(top);
 		}else if(msg.indexOf("@#%$add%$#@") !== -1){
 			var helper = msg.split(":");
 			ws.sockname = helper[3]+":"+helper[1];
 			updateWSList(helper[2],ws,"add",null);
-		}else if (msg.indexOf("@#%$delete%$#@") !== -1){
-			
+		}else if (msg.indexOf("@#$%delete%$#@") !== -1){
+			var helper = msg.split(":")
+            updateListTopic(helper[2],null,"delete",helper[1]+":"+helper[3])
 		}else if(msg.indexOf("@#%$changeChat%$#@") !== -1){
 
 		}else if(msg.indexOf("@#$%broadCastMsg%$#@") !== -1){
@@ -222,16 +223,15 @@ function getContador(data){
 	} else {
 		var text = data.split("|");
 		var size = text.length;
-		//console.log(size);
 		var text1 = text[size - 2];
 		var text2 = text1.split(":");
-		console.log(text2[2]);
+	
 		return text2[2];
 	}
 }
 
 function updateWSList(type,ws,command,name){
-	switch (type) {
+    switch (type) {
     case 'Java':
         if(command == 'add'){
         	wss_JAVA.push(ws)
@@ -242,7 +242,7 @@ function updateWSList(type,ws,command,name){
         			wss_JAVA[i-1] = wss_JAVA[i]
         		}
         		if(wss_JAVA[i].sockname == name && !found){
-        			delete wss_JAVA[i]
+                    delete wss_JAVA[i]
         			found = true
         		}
         	};
@@ -336,42 +336,42 @@ function broadCastMsg(id,type,user,msg){
     case 'Java':
        	for (var i = 0; i < wss_JAVA.length; i++) {
        		if(wss_JAVA[i].sockname.split(":")[0] === id){
-       			wss_JAVA[i].send("@#%$broadCastMsg@#%$:"+ "[ "+user+ " ] "+ msg);
+       			wss_JAVA[i].send("@#%$broadCastMsg@#%$:"+ user+ ":"+ msg);
        		}
        	};
         break; 
     case 'Python':
        	for (var i = 0; i < wss_PYTHON.length; i++) {
        		if(wss_PYTHON[i].sockname.split(":")[0] === id){
-       			wss_PYTHON[i].send("@#%$broadCastMsg@#%$:"+ "[ "+user+ " ] "+ msg);
+       			wss_PYTHON[i].send("@#%$broadCastMsg@#%$:"+ user+ ":"+ msg);
        		}
        	};
         break; 
     case 'Nodejs':
         for (var i = 0; i < wss_NODEJS.length; i++) {
        		if(wss_NODEJS[i].sockname.split(":")[0] === id){
-       			wss_NODEJS[i].send("@#%$broadCastMsg@#%$:"+ "[ "+user+ " ] "+ msg);
+       			wss_NODEJS[i].send("@#%$broadCastMsg@#%$:"+ user+ ":"+ msg);
        		}
        	};
         break;
     case 'Swift':
         for (var i = 0; i < wss_SWIFT.length; i++) {
        		if(wss_SWIFT[i].sockname.split(":")[0] === id){
-       			wss_SWIFT[i].send("@#%$broadCastMsg@#%$:"+ "[ "+user+ " ] "+ msg);
+       			wss_SWIFT[i].send("@#%$broadCastMsg@#%$:"+ user+ ":"+ msg);
        		}
        	};
         break; 
     case 'JavaScript':
        for (var i = 0; i < wss_JS.length; i++) {
        		if(wss_JS[i].sockname.split(":")[0] === id){
-       			wss_JS[i].send("@#%$broadCastMsg@#%$:"+ "[ "+user+ " ] "+ msg);
+       			wss_JS[i].send("@#%$broadCastMsg@#%$:"+ user+ ":"+ msg);
        		}
        	};
         break; 
     case 'Ruby':
         for (var i = 0; i < wss_RUBY.length; i++) {
        		if(wss_RUBY[i].sockname.split(":")[0] === id){
-       			wss_RUBY[i].send("@#%$broadCastMsg@#%$:"+ "[ "+user+ " ] "+ msg);
+       			wss_RUBY[i].send("@#%$broadCastMsg@#%$:"+ user+ ":"+ msg);
        		}
        	};
         break;  
