@@ -9,23 +9,91 @@ var top
 getTopic();
 var clients;
 
+var http = require("http");
+//const f3 = require('./Fachada3.js');
 
 /*    Server-Sent Events    */
-function updateListTopic(){
-	var http = require("http");
-	var serverRead;
-	http.createServer(function(req, res) {
+/*Publisher*/
+/*
+const mqtt = require('mqtt')
+
+//const client = mqtt.connect('mqtt://broker.hivemq.com')
+const client = mqtt.connect ('mqtt://test.mosquitto.org')
+client.on('message', () => {
+console.log('message')
+})
+
+function sendData(dados) {
+console.log('publishing')
+        client.publish('sse', dados);
+console.log('published '+ dados);
+
+}
+*/
+
+var clients = {};
+var id=0;
+http.createServer(function(req, res){
+    var my_id = id++;
+    clients[my_id] = res;
 
     res.writeHeader(200, {
         "Content-Type": "text/event-stream",
         "Cache-Control": "no-cache",
-        "Connection": "keep-alive",
+        "Connection": "keep-alive", 
         "Access-Control-Allow-Origin": "*"
     });
-    
-    serverRead = res;
-	}).listen(9090);	
+
+    res.on('finish', function(){
+        delete clients[my_id];
+    });
+
+    res.on('close', function(){
+        delete clients[my_id];
+    });
+}).listen(9000);
+
+function sendEventSource(data){
+
+
+    for( id in  clients){
+        clients[id].write("data: "+JSON.stringify(data)+"\n\n");
+    }
 }
+
+function carregar (id, titulo, topico){
+    var data = {
+        id: id,
+        titulo: titulo, 
+        topico: topico
+    }
+
+    sendEventSource(data);
+}
+
+/*Subscriber*/
+/*
+const cliente = mqtt.connect ('mqtt://test.mosquitto.org')
+
+cliente.on('connect', () => {
+    client.subscribe('sse'); 
+console.log('connected');
+
+})
+
+client.on('message', (topic,message) => {
+   
+    f3.upload(message);  
+
+
+console.log('received message %s %s', topic, message)
+
+})
+
+*/
+
+
+/*------------------------------------------------------------------*/
 
 /*    WS-Server    */
 var WebSocketServer = require('ws').Server;
@@ -77,6 +145,9 @@ wss1.on('connection', function(ws) {
 			ws.send("id:"+count)
 		}else{
 			var result = setTopic(msg);
+            var index = getContador(top);
+            var count = parseInt(index) + 1;
+            carregar(count,msg.split(':')[0], msg.split(':')[1]);
 			ws.send(result);
 		}	
 	});

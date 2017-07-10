@@ -2,6 +2,7 @@ var conn;
 var topic;
 var id;
 var user;
+var user_topic;
 window.onload = function() {
 
 	var url = document.location.href;
@@ -9,7 +10,7 @@ window.onload = function() {
 	var title = helper[1].split("&")[0];
 	topic= helper[1].split("&")[1];
 	user = helper[1].split("&")[2];
-	var user_topic = helper[1].split("&")[3];
+	user_topic = helper[1].split("&")[3];
 	id = helper[1].split("&")[4]
 	
 	document.getElementById("chat_label").innerHTML = "User[  " + user +"  ] Titulo [ " + title + " ] Tópico [ " + topic + " ] <br>";
@@ -42,12 +43,12 @@ window.onload = function() {
 	}
 
 	connection.onclose = function(){
-
+		send('desconnect');
 	}
 	
 }
 
-function addTopic(msg,username,name_topic){
+ function addTopic(msg,username,name_topic){
 	var ul = document.getElementById("topics_area");
 	var li = document.createElement("li");
 	li.setAttribute("style", "font-size: 15px");
@@ -132,11 +133,18 @@ function disconnect(){
 }
 
 
-/*
- var source = new EventSource("http://localhost:9090");
+
+function upload(msg){
+
+	console.log('ENTREI NA FACHADA!! '+ msg);
+}
+
+ var source = new EventSource("http://localhost:9000");
 
     source.onmessage = function(event) {
-    	addTopic();
-        document.getElementById("result").innerHTML += event.data + "<br>";
+    	var data = JSON.parse(event.data); 
+    	console.log(user_topic);
+    	if(isTopic(user_topic,data.topico)){
+    		addTopic(" ID[ "+ data.id + " ] Tópico[ "+ data.titulo + " ] Tipo[ "+ data.topico + " ]",user, data.titulo+":"+data.topico+":"+data.id);	
+    	}
 }
-*/

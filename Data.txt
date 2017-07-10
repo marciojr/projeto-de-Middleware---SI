@@ -1,1 +1,1 @@
-thiago:tas:123:Java,Nodejs,Python,Swift,JavaScript,Ruby|testando:teste:123:Java,Python,JavaScript|luis:lulinha:12345:Java,Swift,JavaScript|
+thiago:tas:123:Java,Nodejs,Python,Swift,JavaScript,Ruby|testando:teste:123:Java,Python,JavaScript|luis:lulinha:12345:Java,Swift,JavaScript|Danilo:ds:123:Python,Swift|pedro:lk:123:|
