@@ -128,12 +128,9 @@ wss2.on('connection', function(ws) {
 			ws.sockname = helper[3]+":"+helper[1];
 			updateWSList(helper[2],ws,"add",null);
 		}else if (msg.indexOf("@#$%delete%$#@") !== -1){
-			console.log(msg)
-            console.log("adasdasdasdasdasda")
             var helper = msg.split(":")
             updateWSList(helper[2],null,"delete",helper[1]+":"+helper[3])
-		}else if(msg.indexOf("@#%$changeChat%$#@") !== -1){
-
+            broadCastMsg(helper[1],helper[2],helper[3],'Usuário '+ helper[3] + ' saiu do chat...');
 		}else if(msg.indexOf("@#$%broadCastMsg%$#@") !== -1){
 			var helper = msg.split(":");
 			broadCastMsg(helper[1],helper[2],helper[3],helper[4]);

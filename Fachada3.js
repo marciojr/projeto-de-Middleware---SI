@@ -80,8 +80,9 @@ function setChatDiscussion(res){
 	var topics = helper[1].split("&")[3];
 
 	if (confirm("Deseja Acessar o Chat deste Tópico?" ) == true) {
+		 send('disconnect');
         document.location.href = "./tela3.html?"+aux[0]+"&"+aux[1]+"&"+username+"&"+topics+"&"+aux[2];
-        send("@#$%changeChat%$#@:"+id+":"+aux[2]+":"+topic+":"+helper[1].split("&")[1])
+       
     } 
 }
 
@@ -133,6 +134,8 @@ function send(msg){
 function disconnect(){
 	console.log("disconnect")
 	send("disconnect")
+	location.href = "./tela1.html?"+user+"&"+user_topic;
+
 }
 
 
